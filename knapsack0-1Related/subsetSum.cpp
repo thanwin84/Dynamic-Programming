@@ -3,26 +3,31 @@ const int D = 1001;
 int  dp[D][D];
 class Solution {
 public:
-    int solve(int N, int arr[], int sum)
+    bool solve(int N, int arr[], int sum)
     {
         // code here
         if (N == 0 and sum == 0) {
             return true;
         }
-        else if (N == 0) {
+        if (N == 0) {
             return false;
         }
-        else if (sum == 0) {
+        if (sum == 0) {
             return true;
         }
-        if (dp[N][sum] != -1) {
-           
-            dp[N][sum] = solve(N - 1, arr, sum - arr[N - 1]) || solve(N-1, arr, sum);
+        if (dp[N][sum] == -1) {
+            return dp[N][sum];
         }
         else {
-            dp[N][sum] = solve(N - 1, arr, sum);
+            if (arr[N - 1] <= sum) {
+                dp[N][sum] = solve(N - 1, arr, sum - arr[N - 1]) || solve(N - 1, arr, sum);
+            }
+            else {
+                dp[N][sum] = solve(N - 1, arr, sum);
+            }
+            return dp[N][sum];
         }
-        return dp[N][sum];
+        
     }
     int subsetSum(int N, int arr[], int sum) {
         for (int i = 0; i <= N; i++) {
@@ -33,6 +38,7 @@ public:
         return solve(N, arr, sum);
     }
 };
+
 //top down approach
 int  dp[D][D];
 class Solution {
