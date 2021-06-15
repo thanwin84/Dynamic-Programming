@@ -52,3 +52,26 @@ int main() {
     cout << obj.unboundedKnapsack(W, 3, val, wt) << endl;
     return 0;
 }
+//top down
+int dp[10000][10000];
+class Solution {
+
+public:
+    int unboundedKnapsack(int W, int n, int values[], int weights[])
+    {
+        // Your code goes here
+        for (int i = 0; i <= W; i++) dp[0][i] = 0;
+        for (int i = 0; i <= n; i++) dp[i][0] = 0;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= W; j++) {
+                if (weights[i - 1] <= j) {
+                    dp[i][j] = max(dp[i - 1][j], values[i - 1] + dp[i][j - weights[i - 1]]);
+                }
+                else {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+        return dp[n][W];
+    }
+};
