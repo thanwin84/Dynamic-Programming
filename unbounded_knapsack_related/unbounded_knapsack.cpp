@@ -75,3 +75,23 @@ public:
         return dp[n][W];
     }
 };
+//space optimized solution
+int dp[10000];
+class Solution {
+
+public:
+    int unboundedKnapsack(int W, int n, int values[], int weights[])
+    {
+        // Your code goes here
+        dp[0] = 0;
+        for (int i = 1; i <= W; i++) dp[i] = INT_MIN;
+        for (int i = 1; i <= W; i++) {
+            for (int j = 0; j < n; j++) {
+                if (weights[j] <= i) {
+                    dp[i] = max(dp[i], dp[i - weights[j]] + 1);
+                }
+            }
+        }
+        return dp[W];
+    }
+};
