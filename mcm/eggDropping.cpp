@@ -17,7 +17,7 @@ public:
         return min_attemp;
     }
 };
-// memoization 
+// memoization and time:O(nk^2)
 using namespace std;
 int dp[102][10002];
 class Solution {
