@@ -27,7 +27,7 @@ public:
         return isSubsetSumRe(N, arr, sum);
     }
 };
-//top down approach 
+//top down approach ,,
 int dp[103][100000];
 class Solution {
 public:
