@@ -26,3 +26,29 @@ class Solution
         return dp[m][n];
     }
 };
+//coin change for leetcode
+//space optimized
+int dp[10000];
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        if (amount == 0){
+            return 0;
+        }
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++) dp[i] = INT_MAX -1;
+        for (int i = 1; i <= amount; i++) {
+            for (int j = 0; j < coins.size(); j++) {
+                if (coins[j] <= i) {
+                    dp[i] = min(dp[i], dp[i - coins[j]] + 1);
+                }
+            }
+        }
+        if (dp[amount] == INT_MAX -1) {
+            return -1;
+        }
+        else {
+            return dp[amount];
+        }
+    }
+};
