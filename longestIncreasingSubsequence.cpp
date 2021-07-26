@@ -1,3 +1,4 @@
+//time: O(n2) and space: O(n)
 int dp[100002];
 class Solution
 {
