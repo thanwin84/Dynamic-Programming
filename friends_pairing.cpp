@@ -1,4 +1,6 @@
 //recursive
+//hint: In how many we ways can divide n into two groups. Avoid double counting
+//time: O(n) and space: O(n)
 long long int dp[1000002];
 
 class Solution
