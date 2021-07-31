@@ -15,9 +15,11 @@ public:
 	int carAssembly(int a[][num_station], int T[][num_station], int e[], int exit[]) {
 		int T1[num_station];
 		int T2[num_station];
+		//Entry cost
 		T1[0] = e[0] + a[0][0];
 		T2[0] = e[1] + a[1][0];
 		for (int i = 1; i < num_station; i++) {
+			//go to another station in the same line, if we get better cost in second line then go to second line and vice versa
 			T1[i] = min(a[0][i] + T1[i - 1], a[0][i] + T2[i - 1] + T[1][i]);
 			T2[i] = min(a[1][i] + T2[i - 1], a[1][i] + T1[i - 1] + T[0][i]);
 		}
