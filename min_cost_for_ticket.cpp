@@ -8,6 +8,7 @@ public:
         if (i >= days.size()) {
             return 0;
         }
+        // single day pass
         int opt1 = costs[0] + solve(days, costs, i + 1);
         int k = i;
         for (; k < days.size(); k++) {
@@ -15,6 +16,7 @@ public:
                 break;
             }
         }
+        //seven days pass
         int opt2 = costs[1] + solve(days, costs, k);
         int k1 = i;
         for (; k1 < days.size(); k1++) {
@@ -22,6 +24,7 @@ public:
                 break;
             }
         }
+        //30 days pass
         int opt3 = costs[2] + solve(days, costs, k1);
         return dp[i] = min(opt1, min(opt2, opt3));
     }
