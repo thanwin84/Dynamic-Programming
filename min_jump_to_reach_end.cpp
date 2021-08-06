@@ -22,3 +22,24 @@ public:
         return solve(nums, 0,  dp);
     }
 };
+//dynamic approach
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+		vector<int> track(nums.size() + 1, INT_MAX);
+		track[0] = 0;
+		int result = INT_MAX;
+		for (int i = 1; i <= nums.size(); i++) {
+			for (int j = 0; j < i; j++) {
+				int possible_ans = 0;
+                // checking if we can reach at ith posible from j
+				if (j + nums[j] >= i) {
+					possible_ans = 1 + track[j];
+					track[i] = min(possible_ans, track[i]);
+                    break; // the first index will give minimum value
+				}
+			}
+		}
+		return track[nums.size() -1];
+    }
+};
