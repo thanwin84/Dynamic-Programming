@@ -44,3 +44,34 @@ public:
 		return track[nums.size() -1];
     }
 };
+//time: O(n) and space: O(1)
+class Solution {
+public:
+	int jump(vector<int>& nums) {
+		if (nums.size() == 1) {
+			return 0;
+		}
+		int ladder = nums[0]; // keep track of the largest ladder that you have
+		int stairs = nums[0]; // Also keep track of the stairs in the ladder
+		int jumps = 1;
+		for (int level = 1; level < nums.size(); level++) {
+			// if we are at the last stair, we don't need to jump 
+			if (level == nums.size() - 1) {
+				return jumps;
+			}
+			//if we get a larger ladder, save it for later
+			if (level + nums[level] > ladder) {
+				//constructing the ladder
+				ladder = level + nums[level];
+			}
+			stairs--;
+			if (stairs == 0) {
+				jumps++;
+				// set new stairs
+				stairs = ladder - level;
+			}
+
+		}
+		return jumps;
+	}
+};
