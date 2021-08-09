@@ -1,4 +1,4 @@
-//using backtracking - O(2^n)
+# using backtracking - O(2^n)
 class Solution:
     def __init__(self):
         self.output = []
