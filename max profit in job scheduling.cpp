@@ -79,10 +79,10 @@ public:
 			if (last != -1) {
 				include += dp[last];
 			}
-			dp[i] = max(dp[i - 1], include);
+            int excluding_first_job = dp[i -1];
+			dp[i] = max(excluding_first_job, include);
 			
 		}
 		return dp[schedules.size() - 1];
 	}
 };
-
