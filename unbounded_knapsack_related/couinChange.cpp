@@ -1,3 +1,35 @@
+//memoization 
+int dp[13][10002];
+class Solution {
+public:
+    int solve(vector<int> & coins, int amount, int n){
+        if (dp[n][amount] != -1){
+            return dp[n][amount];
+        }
+        if (amount == 0){
+            return 0;
+        }
+        if (n == 0){
+            return INT_MAX - 1;
+        }
+        if (coins[n -1] <= amount){
+            int included = 1 + solve(coins, amount - coins[n -1], n);
+            int not_included = solve(coins, amount, n - 1);
+            return dp[n][amount] =  min(included, not_included);
+        }
+        else {
+            return dp[n][amount] = solve(coins, amount, n -1);
+        }
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        memset(dp, -1, sizeof(dp));
+        int result = solve(coins, amount, coins.size());
+        if (result == INT_MAX -1){
+            return -1;
+        }
+        return result;
+    }
+};
 //time O(n*m) and space: O(n*m)
 long long int dp[1000][1000];
 class Solution
