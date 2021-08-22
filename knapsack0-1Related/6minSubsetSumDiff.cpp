@@ -1,3 +1,6 @@
+//s1 - s2 = minimize
+// s1 and s2 will be in between 0 - range. if we can find s1, s2 will be just range - s1
+// so, s2 - s1 = range - s1 - s1 = range - 2s1= minimize
 bool dp[10000][10000];
 class Solution{
 
