@@ -35,3 +35,19 @@ int main() {
     cout << obj.rod_cutting(p, l, 8)<< endl;
 	return 0;
 }
+//space optimized solution
+class Solution{
+  public:
+    int cutRod(int price[], int n) {
+        //code here
+        int dp[n + 1];
+        memset(dp, 0, sizeof(dp));
+        for (int i = 0; i <= n; i++){
+            for (int j = 1; j <= i; j++){
+                dp[i] = max(dp[i], price[j - 1] + dp[i - j]);
+            }
+        }
+        return dp[n];
+    }
+};
+
