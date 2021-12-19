@@ -7,22 +7,19 @@ public:
     int longestSubsequence(int n, int a[])
     {
         // your code here
-		dp[0] = 1;
-		int best = 0;
-		for (int i = 1; i < n; i++) {
-			dp[i] = 1;
-			for (int j = i - 1; j >= 0; j--) {
-				if (a[j] > a[i]) {
-					continue;
-				}
-				else if (a[i] > a[j]) {
-					int possibleAns = dp[j] + 1;
-					if (possibleAns > dp[i]) dp[i] = possibleAns;
-					if (dp[i] > best) best = dp[i];
-				}
-			}
-		}
-		return best;
+        dp[0] = 1;
+        int result = 0;
+        for (int i = 1; i < n; i++) {
+            dp[i] = 1;
+            for (int j = 0; j < i; j++) {
+                if (a[i] > a[j]) {
+                    int possible_ans = dp[j] + 1;
+                    dp[i] = max(dp[i], possible_ans);
+                }
+            }
+            result = max(result, dp[i]);
+        }
+        return result;
     }
 };
 //time: O(NlogN)
