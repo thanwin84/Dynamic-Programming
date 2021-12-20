@@ -1,4 +1,4 @@
-//time: O(n2
+//time: O(n2)
 int dp[1002];
 class Solution {
 public:
