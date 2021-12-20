@@ -1,8 +1,5 @@
+//time: O(n2
 int dp[1002];
-bool comp(vector<int>& p1, vector<int>& p2) {
-	return p1[1] < p2[1];
-}
-
 class Solution {
 public:
 	int findLongestChain(vector<vector<int>>& pairs) {
