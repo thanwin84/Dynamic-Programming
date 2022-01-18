@@ -1,4 +1,5 @@
-//time: O(n)
+//time: O(n) space: O(n)
+//top down approach
 int dp[1002];
 class Solution {
 public:
@@ -15,11 +16,9 @@ public:
 
     }
     int minCostClimbingStairs(vector<int>& cost) {
+        int n = cost.size();
         memset(dp, -1, sizeof(dp));
-        int first_step = solve(cost, cost.size() - 1);
-        memset(dp, -1, sizeof(dp));
-        int second_step = solve(cost, cost.size() - 2);
-        return min(first_step, second_step);
-
+        solve(cost, n - 1);
+        return min(dp[n-1], dp[n-2]);
     }
 };
