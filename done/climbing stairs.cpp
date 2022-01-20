@@ -22,6 +22,7 @@ public:
         return min(dp[n-1], dp[n-2]);
     }
 };
+//time complexity: et each ith funcion call, we look up the previous value which is already computed. So it takes constant time. So overall time complexity is O(n)
 //iterative approach
 int dp[1002];
 class Solution {
