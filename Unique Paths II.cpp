@@ -67,6 +67,7 @@ public:
     }
 };
 //time: O(n * m) and space: O(n + m)
+
 // *****iterative********//
 int dp[101][101];
 class Solution {
@@ -96,3 +97,33 @@ public:
         return dp[r - 1][c - 1];
     }
 };
+//time: O(n * m) and space: O(n + m)
+// if we look closely, we can do it in constant time.
+
+class Solution {
+public:
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        int r = obstacleGrid.size();
+        int c = obstacleGrid[0].size();
+        for (int i = 0; i < r; i++){
+            for (int j = 0; j < c; j++){
+                if (i == 0 and j == 0 and obstacleGrid[i][j] == 0){
+                    obstacleGrid[i][j] = 1;
+                }
+                else if (obstacleGrid[i][j] == 1){
+                    obstacleGrid[i][j] = 0;
+                }
+                else {
+                   if (j > 0){
+                       obstacleGrid[i][j] += obstacleGrid[i][j - 1];
+                   }
+                   if (i > 0) {
+                       obstacleGrid[i][j] += obstacleGrid[i - 1][j];
+                   }
+            }
+        }
+        }
+        return obstacleGrid[r - 1][c - 1];
+    }
+};
+//space: O(1) since we are not using any additional space.
