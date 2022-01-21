@@ -34,4 +34,34 @@ public:
 };
 //time: O(2^r + c) since we have two choice every step
 //algo: Backtracking
-space: O(r+c)
+//space: O(r+c)
+int dp[101][101];
+class Solution {
+public:
+    int total_path;
+    int solve(vector<vector<int>>& grid, int r, int c) {
+        if (r < 0 || c < 0 || grid[r][c]){
+            return 0;
+        }
+        if (r == 0 and c == 0) {
+            return 1;
+        }
+        if (dp[r][c] != -1){
+            return dp[r][c];
+        }
+        int left = solve(grid, r -1, c);
+        int right = solve(grid, r, c - 1);
+        return dp[r][c] = left + right;
+    }
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        int r = obstacleGrid.size();
+        int c = obstacleGrid[0].size();
+        memset(dp, -1, sizeof(dp));
+        if (obstacleGrid[r - 1][c - 1] == 1){
+            return 0;
+        }
+        total_path = 0;
+        return solve(obstacleGrid, r - 1, c - 1);
+    }
+};
+//time: O(n * m) and space: O(n + m)
