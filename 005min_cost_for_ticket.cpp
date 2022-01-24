@@ -1,4 +1,4 @@
-//time: O(365)
+//time: O(n)
 int dp[367];
 class Solution {
 public:
