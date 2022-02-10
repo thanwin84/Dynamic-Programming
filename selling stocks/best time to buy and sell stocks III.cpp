@@ -1,5 +1,5 @@
 //top-down approach
-//time: O(n) 
+//time: O(n) since we have to do at most 2 transaction
 int dp[100002][2][3];
 class Solution {
 public:
