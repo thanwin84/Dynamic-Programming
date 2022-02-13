@@ -47,3 +47,29 @@ public:
         return dp[0][0][2];
     }
 };
+//Divide and conqure
+//time: O(n) and space: O(n)
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        vector<int> left(n, 0);
+        vector<int> right(n, 0);
+        int left_min = prices[0];
+        int right_max = prices[n - 1];
+        for (int i = 1; i < n; i++){
+            left[i] = max(left[i - 1], prices[i] - left_min);
+            left_min = min(left_min, prices[i]);
+        }
+        for (int i = n -2; i >= 0; i--){
+            right[i] = max(right[i + 1], right_max - prices[i]);
+            right_max = max(right_max, prices[i]);
+        }
+        int profit = right[0];
+        for (int i = 1; i < n; i++){
+            profit = max(profit, left[i -1] + right[i]);
+        }
+        return profit;
+        
+    }
+};
