@@ -48,6 +48,9 @@ public:
     }
 };
 //Divide and conqure
+//profit at ith index = max profit from 0 to i - 1 + max profit from i to n
+//to search max profit at every index will take O(n) time. To seach at every index , it will take O(n^2)
+//we can optimize it if we can precalculate values
 //time: O(n) and space: O(n)
 class Solution {
 public:
