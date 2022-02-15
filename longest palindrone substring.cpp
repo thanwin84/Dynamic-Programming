@@ -56,3 +56,43 @@ public:
     }
 };
 //time: O(n^2) and space: O(n^2)
+
+//space optimized solution
+// time: O(n^2) and space: O(1)
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        int n = s.size();
+        int start = 0;
+        int end = 0;
+        int _max = 1;
+        for (int m = 0; m < n; m++) {
+            int i = m;
+            int j = m;
+            while (i >= 0 && j < n && s[i] == s[j]) {
+                if (j - i + 1 > _max) {
+                    start = i;
+                    end = j;
+                    _max = j - i + 1;
+                }
+                i--;
+                j++;
+            }
+        }
+        for (int m = 0; m < n; m++) {
+            int i = m;
+            int j = m + 1;
+            while (i >= 0 && j < n && s[i] == s[j]) {
+                if (j - i + 1 > _max) {
+                    start = i;
+                    end = j;
+                    _max = j - i + 1;
+                }
+                i--;
+                j++;
+            }
+        }
+        string result = s.substr(start, _max);
+        return result;
+    }
+};
