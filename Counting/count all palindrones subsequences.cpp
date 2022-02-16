@@ -1,3 +1,4 @@
+// ***************top down approach*******
 long long int palindrones[1002][1002];
 class Solution {
     long long int mod = 1000000007;
@@ -33,3 +34,48 @@ public:
     }
 
 };
+//time: O(n^2) and space: O(n^2)
+
+// *******iterative approach*********
+//using gap strategy to treverse
+long long int palindrones[1002][1002];
+class Solution {
+    long long int mod = 1000000007;
+public:
+    long long int  countPS(string str)
+    {
+        //Your code here
+        for (int gap = 0; gap < str.size(); gap++) {
+            for (int i = 0, j = gap; j < str.size(); i++, j++) {
+                if (gap == 0) {
+                    palindrones[i][j] = 1;
+                }
+                else if (gap == 1) {
+                    if (str[i] == str[j]) {
+                        palindrones[i][j] = 3;
+                    }
+                    else {
+                        palindrones[i][j] = 2;
+                    }
+                }
+                else {
+                    long long int without_first_char = palindrones[i + 1][j];
+                    long long int without_last_char = palindrones[i][j - 1];
+                    if (str[i] == str[j]) {
+                        palindrones[i][j] = without_first_char + without_last_char + 1;
+                    }
+                    else {
+                        palindrones[i][j] = without_first_char + without_last_char - palindrones[i+ 1][j - 1];
+                    }
+                }
+                palindrones[i][j] += mod;
+                palindrones[i][j] %= mod;
+
+            }
+        }
+        return palindrones[0][str.size() -1];
+    }
+
+};
+
+//same time complexity
