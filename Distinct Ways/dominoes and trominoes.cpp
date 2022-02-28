@@ -56,3 +56,20 @@ public:
         return solve(0, true, true, n);
     }
 };
+
+// another approach
+#define mod 1000000007
+class Solution {
+    long long int dp[1001];
+public:
+    int numTilings(int n) {
+        dp[0] = 1;
+        dp[1] = 2; 
+        dp[2] = 5;
+        for (int i = 3; i < n; i++){
+            dp[i] = 2 * dp[i - 1] + dp[i -3];
+            dp[i] %= mod;
+        }
+        return dp[n -1];
+    }
+};
