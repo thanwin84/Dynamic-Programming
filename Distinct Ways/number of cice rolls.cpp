@@ -62,9 +62,9 @@ class Solution {
 public:
     int numRollsToTarget(int dices, int faces, int target) {
         vector<long long int> prev(target + 1, 0);
+        vector<long long int> current(target + 1, 0);
         prev[0] = 1;
         for (int dice = 1; dice <= dices; dice++){
-            vector<long long int> current(target + 1, 0);
             for (int amount = 1; amount <= target; amount++){
                 // try every possible faces
                 for (int face = 1; face <= faces; face++){
@@ -77,6 +77,7 @@ public:
             // swapping current with prev
             for (int i = 0; i <= target; i++){
                 prev[i] = current[i];
+                current[i] = 0;
             }
             
         }
@@ -85,4 +86,3 @@ public:
         
     }
 };
-
