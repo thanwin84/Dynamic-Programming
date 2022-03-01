@@ -53,3 +53,36 @@ public:
         
     }
 };
+
+// Space optimized Solution
+// if we look carefully, in every iteration we need only previous row. so we can optimized space to 1D array.
+// time: O(n * target) and  space: O(target)
+#define mod 1000000007
+class Solution {
+public:
+    int numRollsToTarget(int dices, int faces, int target) {
+        vector<long long int> prev(target + 1, 0);
+        prev[0] = 1;
+        for (int dice = 1; dice <= dices; dice++){
+            vector<long long int> current(target + 1, 0);
+            for (int amount = 1; amount <= target; amount++){
+                // try every possible faces
+                for (int face = 1; face <= faces; face++){
+                    if (face <= amount){
+                        current[amount] += (prev[amount - face] % mod);
+                    }
+                    
+                }
+            }
+            // swapping current with prev
+            for (int i = 0; i <= target; i++){
+                prev[i] = current[i];
+            }
+            
+        }
+    
+        return prev[target] % mod;
+        
+    }
+};
+
