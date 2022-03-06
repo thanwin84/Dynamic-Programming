@@ -15,7 +15,7 @@ public:
             no_swap = solve(nums1, nums2, pos + 1, nums1[pos], nums2[pos], 0);
         }
         if (prev1 < nums2[pos] && prev2 < nums1[pos]){
-            swap = 1 + solve(nums1, nums2, pos + 1, nums2[pos], nums1[pos], 1);
+            swap = min(no_swap,1 + solve(nums1, nums2, pos + 1, nums2[pos], nums1[pos], 1));
         }
         return dp[pos][_swap] = min(swap, no_swap);
     }
