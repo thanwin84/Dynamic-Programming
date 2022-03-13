@@ -1,3 +1,4 @@
+// c++ solution
 // time: O(n * m ) and space: O(1)
 class Solution {
 public:
@@ -23,4 +24,26 @@ public:
         return abs(dungeon[0][0]) + 1;
         
     }
+};
+// javascript solution
+var calculateMinimumHP = function(dungeon) {
+    let row = dungeon.length
+    let col = dungeon[0].length
+    for (let r = row - 1; r >= 0; r--){
+        for (let c = col - 1; c >= 0; c--){
+            if (r === row - 1 && c == col - 1){
+                dungeon[r][c] = Math.min(0, dungeon[r][c]);
+            }
+            else if (c === col -1){
+                dungeon[r][c] = Math.min(0, dungeon[r][c] + dungeon[r + 1][c]);
+            }
+            else if (r === row - 1){
+                dungeon[r][c] = Math.min(0, dungeon[r][c] + dungeon[r][c + 1]);
+            }
+            else {
+                dungeon[r][c] = Math.min(0, dungeon[r][c] + Math.max(dungeon[r + 1][c], dungeon[r][c + 1]));
+            }
+        }
+    }
+    return Math.abs(dungeon[0][0]) + 1;
 };
