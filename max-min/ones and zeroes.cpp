@@ -34,38 +34,7 @@ public:
         return solve(strs, strs.size() -1, m, n);
     }
     
-    //space optimized iterative approach
-    // space: O(n *m)
-    class Solution {
-public:
-    pair<int, int> countZeroesOnes(string &str){
-        int n = str.size();
-        int zeroes = 0;
-        for (int i = 0; i < n; i++){
-            if (str[i] == '0') zeroes++;
-        }
-        return {zeroes, n - zeroes};
-    }
-    int findMaxForm(vector<string>& strs, int m, int n) {
-        vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
-        for (int currentInd = 1; currentInd <= strs.size(); currentInd++){
-            pair<int, int> p = countZeroesOnes(strs[currentInd-1]);
-            for (int zeroes = m; zeroes >= 0; zeroes--){
-                for (int ones = n; ones >= 0; ones--){
-                    int including = 0;
-                    int excluding = dp[zeroes][ones];
-                    if (zeroes - p.first >= 0 && ones - p.second >= 0){
-                        including = 1 + dp[zeroes - p.first][ones - p.second];
-                    }
-                    dp[zeroes][ones] = max(including, excluding);
-                }
-            }
-        }
-        
-        return dp[m][n];
-    }
-};
-};
+   
 // top down 
 int dp[601][101][101];
 class Solution {
@@ -97,4 +66,36 @@ public:
         
         return dp[strs.size()][m][n];
     }
+};
+//space optimized iterative approach
+    // space: O(n *m)
+    class Solution {
+public:
+    pair<int, int> countZeroesOnes(string &str){
+        int n = str.size();
+        int zeroes = 0;
+        for (int i = 0; i < n; i++){
+            if (str[i] == '0') zeroes++;
+        }
+        return {zeroes, n - zeroes};
+    }
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+        for (int currentInd = 1; currentInd <= strs.size(); currentInd++){
+            pair<int, int> p = countZeroesOnes(strs[currentInd-1]);
+            for (int zeroes = m; zeroes >= 0; zeroes--){
+                for (int ones = n; ones >= 0; ones--){
+                    int including = 0;
+                    int excluding = dp[zeroes][ones];
+                    if (zeroes - p.first >= 0 && ones - p.second >= 0){
+                        including = 1 + dp[zeroes - p.first][ones - p.second];
+                    }
+                    dp[zeroes][ones] = max(including, excluding);
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+};
 };
