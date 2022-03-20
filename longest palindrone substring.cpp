@@ -58,38 +58,46 @@ public:
 //time: O(n^2) and space: O(n^2)
 
 //space optimized solution
+//Algorithm: Palindrone cane be made with odd number of character or even number.
+// the idea is to move to left and right from center and check if it's palindrone or not.
+
 // time: O(n^2) and space: O(1)
 class Solution {
 public:
+    pair<int, int> expand_around_center(string& s, int mid, int left, int right) {
+        int n = s.size();
+        int _max = INT_MIN;
+        int start = left;
+        int end = right;
+        while (left >= 0 && right < n && s[left] == s[right]) {
+            if (right - left + 1 > _max) {
+                start = left;
+                end = right;
+                // updating new langht of palindrone
+                _max = right - left + 1;
+            }
+            left--;
+            right++;
+        }
+        return {start, _max};
+    }
     string longestPalindrome(string s) {
         int n = s.size();
         int start = 0;
-        int end = 0;
         int _max = 1;
-        for (int m = 0; m < n; m++) {
-            int i = m;
-            int j = m;
-            while (i >= 0 && j < n && s[i] == s[j]) {
-                if (j - i + 1 > _max) {
-                    start = i;
-                    end = j;
-                    _max = j - i + 1;
-                }
-                i--;
-                j++;
+        // checking for odd number palindrone
+        for (int mid = 0; mid < n; mid++) {
+            // checking for odd number palindrone
+            pair<int, int> odd_palindrone = expand_around_center(s, mid, mid, mid);
+            // checking for even number palindrone
+            pair<int, int> even_palindrone = expand_around_center(s, mid, mid, mid + 1);
+            if (odd_palindrone.second > _max) {
+                _max = odd_palindrone.second;
+                start = odd_palindrone.first;
             }
-        }
-        for (int m = 0; m < n; m++) {
-            int i = m;
-            int j = m + 1;
-            while (i >= 0 && j < n && s[i] == s[j]) {
-                if (j - i + 1 > _max) {
-                    start = i;
-                    end = j;
-                    _max = j - i + 1;
-                }
-                i--;
-                j++;
+            if (even_palindrone.second> _max) {
+                _max = even_palindrone.second;
+                start = even_palindrone.first;
             }
         }
         string result = s.substr(start, _max);
