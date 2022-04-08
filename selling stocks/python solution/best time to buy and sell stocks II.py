@@ -56,6 +56,8 @@ class Solution:
         return aheadBuy
     
 # using four variable and single pass
+#  in the above example, first we are calculting curr[0] and then curr[1]. we can calculate it in one go
+#  that means we can omit 2nd loop
 # time: O(n) and space: O(1)
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
@@ -69,5 +71,5 @@ class Solution:
             aheadNotBuy = currentNotBuy
         return aheadBuy
                     
-                 
+        
  
