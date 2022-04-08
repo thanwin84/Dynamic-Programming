@@ -38,3 +38,36 @@ class Solution:
                     profit[curr][buy] = max(prices[curr] + profit[curr + 1][True], skip)
         return profit[0][1];
                     
+       
+# using four variables
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        days = len(prices)
+        aheadBuy = aheadNotBuy = 0
+        currentBuy = currentNotBuy = 0
+        for curr in range(days -1, -1, -1):
+            for buy in range(2):
+                if buy:
+                    currentBuy = max(-prices[curr] + aheadNotBuy, aheadBuy)
+                else:
+                    currentNotBuy = max(prices[curr] + aheadBuy, aheadNotBuy)
+            aheadBuy = currentBuy
+            aheadNotBuy = currentNotBuy
+        return aheadBuy
+    
+# using four variable and single pass
+# time: O(n) and space: O(1)
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        days = len(prices)
+        aheadBuy = aheadNotBuy = 0
+        currentBuy = currentNotBuy = 0
+        for curr in range(days -1, -1, -1):
+            currentNotBuy = max(prices[curr] + aheadBuy, aheadNotBuy)
+            currentBuy = max(-prices[curr] + aheadNotBuy, aheadBuy)
+            aheadBuy = currentBuy
+            aheadNotBuy = currentNotBuy
+        return aheadBuy
+                    
+                 
+ 
