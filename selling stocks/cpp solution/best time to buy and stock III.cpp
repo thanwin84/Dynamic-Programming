@@ -53,7 +53,7 @@ public:
         return dp[0][0][true];
     }
 };
-// space: O(1)
+// time: O(n) and space: O(1)
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
@@ -61,9 +61,9 @@ public:
         vector<vector<int>> ahead(3, vector<int>(2, 0));
         vector<vector<int>> current(3, vector<int>(2, 0));
         for (int currDay = n; currDay >= 0; currDay--){
-            for (int trans = 0; trans <= 2; trans++){
+            for (int trans = 0; trans <= 1; trans++){
                 for (int bought = 0; bought <= 1; bought++){
-                    if (currDay == n || trans == 2){
+                    if (currDay == n){
                         current[trans][bought] = 0;
                         
                     }
