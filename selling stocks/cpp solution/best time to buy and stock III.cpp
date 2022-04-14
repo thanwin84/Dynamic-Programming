@@ -24,3 +24,32 @@ public:
         return solve(prices, 0, 0, true);
     }
 };
+// iterative approach
+int dp[100001][3][2];
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        for (int currDay = n; currDay >= 0; currDay--){
+            for (int trans = 0; trans <= 2; trans++){
+                for (int bought = 0; bought <= 1; bought++){
+                    if (currDay == n || trans == 2){
+                        dp[currDay][trans][bought] = 0;
+                        
+                    }
+                    else if (bought){
+                        int buy = -prices[currDay] + dp[currDay + 1][trans][false];
+                        int skip = dp[currDay + 1][trans][bought];
+                        dp[currDay][trans][bought] = max(buy, skip);
+                    }
+                    else {
+                        int sell = prices[currDay] + dp[currDay + 1][trans + 1][true];
+                        int skip = dp[currDay + 1][trans][bought];
+                        dp[currDay][trans][bought] = max(sell, skip);
+                    }
+                }
+            }
+        }
+        return dp[0][0][true];
+    }
+};
