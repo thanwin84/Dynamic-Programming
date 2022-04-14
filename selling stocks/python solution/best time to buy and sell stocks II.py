@@ -7,7 +7,7 @@ class Solution:
         
         if dp[current][bought] != -1:
             return dp[current][bought]
-        # we can always skip to buy or sell in current day
+        # we can always skip current day 
         skip = self.solve(prices, current + 1, bought, dp)
         if not bought:
             sell = prices[current] + self.solve(prices, current + 1, True, dp)
@@ -56,7 +56,7 @@ class Solution:
         return aheadBuy
     
 # using four variable and single pass
-#  in the above example, first we are calculting curr[0] and then curr[1]. we can calculate it in one go
+#  in the above example, at first we calculated curr[0] and then curr[1]. we can calculate it in one go
 #  that means we can omit 2nd loop
 # time: O(n) and space: O(1)
 class Solution:
