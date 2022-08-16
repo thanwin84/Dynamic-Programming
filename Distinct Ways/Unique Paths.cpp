@@ -40,3 +40,22 @@ public:
         return dp[m - 1][n -1];
     }
 };
+// in this problem space optimize is not important. 
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        vector<int> curr(n, 0);
+        vector<int> prev(n, 1);
+        for (int row = 1; row < m; row++) {
+            curr[0] = 1;
+            for (int col = 1; col < n; col++) {
+                if (row == 0 || col == 0) curr[col] = 1;
+                else {
+                    curr[col] = prev[col] + curr[col - 1];
+                }
+            }
+            prev = curr;
+        }
+        return prev[n - 1];
+    }
+};
