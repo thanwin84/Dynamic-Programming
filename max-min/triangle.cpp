@@ -44,13 +44,17 @@ public:
 class Solution {
 public:
     int minimumTotal(vector<vector<int>>& triangle) {
-        int last_row = triangle.size();
-        int last_row_col = triangle[last_row - 1].size();
-        for (int row = last_row - 2; row >= 0; row--){
-            for (int col = 0; col < triangle[row].size(); col++){
-                triangle[row][col] = triangle[row][col] + min(triangle[row + 1][col], triangle[row + 1][col + 1]);
+        int rows = triangle.size();
+        for (int currRow = rows - 2; currRow >= 0; currRow--){
+            for (int currCol = 0; currCol < triangle[currRow].size(); currCol++){
+                int nextRow = currRow + 1;
+                int downward = triangle[nextRow][currCol];
+                int diagonal = triangle[nextRow][currCol + 1];
+                triangle[currRow][currCol] = triangle[currRow][currCol] + min(downward, diagonal);
+                
             }
         }
+        
         return triangle[0][0];
     }
 };
