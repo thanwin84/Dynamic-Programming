@@ -1,70 +1,68 @@
 //memoization 
-int const D = 10000;
-int dp[201][200001];
 class Solution {
 public:
-    bool solve(vector<int>& nums, int n, int target) {
-
-        if (target < 0 || n == 0) return false;
-        if (target == 0) return true;
-        if (dp[n][target] != -10) return dp[n][target];
-        return dp[n][target] = solve(nums, n - 1, target - nums[n - 1]) or solve(nums, n - 1, target);
-    }
-    bool canPartition(vector<int>& nums) {
-        int sum = 0;
-        for (auto i : nums) {
-            sum += i;
+    bool solve(vector<int> & nums, int target, int n, vector<vector<int>> &dp){
+        // we've got the partition
+        if (target == 0){
+            return true;
         }
-        for (int i = 0; i <= nums.size(); i++) {
-            for (int j = 0; j <= sum / 2; j++) {
-                dp[i][j] = -10;
-            }
-        }
-        if (sum % 2 != 0) {
+        // no items to choose
+        if (n == 0 || target < 0){
             return false;
         }
-        else {
-            return solve( nums, nums.size(), sum / 2);
+        if (dp[n][target] != -1) {
+            return dp[n][target];
         }
-
+        bool notPick = solve(nums, target, n - 1, dp);
+        bool pick = false;
+        if (nums[n - 1] <= target){
+            pick = solve(nums, target - nums[n - 1], n -1, dp);
+        }
+        return dp[n][target] = notPick || pick;
+    }
+    bool canPartition(vector<int>& nums) {
+        int totalSum = 0;
+        for (auto value: nums){
+            totalSum += value;
+        }
+        if (totalSum % 2 != 0) {
+            return false;
+        }
+        
+        vector<vector<int>> dp(201, vector<int>(10002, -1));
+        return solve(nums, totalSum / 2, nums.size(), dp);
     }
 };
 
 //top down
-int const D = 10000;
-bool dp[D][D];
+
 class Solution {
 public:
-    bool subsetSum(int N, vector<int> arr, int sum) {
-        for (int i = 0; i <= N; i++) {
-            dp[i][0] = true;
+    bool canPartition(vector<int>& nums) {
+        int totalSum = 0;
+        int n = nums.size();
+        for (auto value: nums){
+            totalSum += value;
         }
-        for (int i = 1; i <= sum; i++) {
-            dp[0][i] = false;
+        
+        if (totalSum % 2 != 0) {
+            return false;
         }
-        for (int i = 1; i <= N; i++) {
-            for (int j = 1; j <= sum; j++) {
-                if (arr[i - 1] <= j) {
-                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - arr[i - 1]];
+        int target = totalSum / 2;
+        vector<vector<int>> dp(201, vector<int>(10002, -1));
+        for (int i = 0; i <=  n; i++) dp[i][0] = true;
+        for (int i = 1; i <= target; i++ ) dp[0][i] = false;
+
+        for (int i = 1; i <= n; i++){
+            for (int j = 1; j <= target; j++){
+                bool notPick = dp[i - 1][j];
+                bool pick = false;
+                if (nums[i - 1] <= j) {
+                    pick = dp[i - 1][j - nums[i -1]];
                 }
-                else {
-                    dp[i][j] = dp[i - 1][j];
-                }
+                dp[i][j] = pick || notPick;
             }
         }
-        return dp[N][sum];
-    };
-    bool canPartition(vector<int>& nums) {
-        int N = nums.size();
-        int sum = 0;
-        for (int i = 0; i < N; i++) {
-            sum += nums[i];
-        }
-        if (sum % 2 != 0) {
-            return 0;
-        }
-        return subsetSum(N, nums, sum / 2);
-        
-        
+        return dp[n][target];
     }
 };
