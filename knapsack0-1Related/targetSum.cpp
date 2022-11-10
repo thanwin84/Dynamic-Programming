@@ -1,33 +1,33 @@
 using namespace std;
-int dp[1002][1002];
 class Solution {
 public:
-    int countSubset(vector<int>& nums, int target) {
-        for (int i = 0; i <= target; i++) dp[0][i] = 0;
-        for (int i = 0; i <= nums.size(); i++) dp[i][0] = 1;
-        for (int i = 1; i <= nums.size(); i++) {
-            for (int j = 0; j <= target; j++) {
-                if (nums[i - 1] <= j) {
-                    dp[i][j] = dp[i - 1][j] + dp[i - 1][j - nums[i - 1]];
-                }
-                else {
-                    dp[i][j] = dp[i - 1][j];
-                }
+    int countSubsets(vector<int> &nums, int sum){
+        int n = nums.size();
+        vector<vector<int>> dp(n + 1, vector<int>(sum + 1, 0));
+        for (int i = 0; i <= n; i++) dp[i][0] = 1;
+        for (int ind = 1; ind <= n; ind++){
+            for (int target = 0; target <= sum; target++){
+                int notTaken = dp[ind - 1][target];
+                int taken = 0;
+                if (nums[ind - 1] <= target) taken = dp[ind - 1][target - nums[ind - 1]];
+                dp[ind][target] = taken + notTaken;
             }
         }
-        return dp[nums.size()][target];
-        
+        return dp[n][sum];
     }
     int findTargetSumWays(vector<int>& nums, int target) {
-        int sum = 0;
-        for (auto i : nums) sum += i;
-        int sum1 = (target + sum) / 2;
-        if (sum < target || (target + sum) % 2 != 0) {
-            return 0;
-        }
-        else {
-            return countSubset(nums, sum1);
-        }
-
+       int sum = 0;
+       for (auto num: nums) {
+           sum += num;
+       }
+       int sum1 = (target + sum) / 2;
+       if (sum < target || (target + sum) % 2 != 0){
+           return 0;
+       }
+       if (nums.size() == 1){
+           if (nums[0] == abs(target)) return 1;
+           if (nums[0] != target) return 0;
+       }
+       return countSubsets(nums, sum1);
     }
 };
