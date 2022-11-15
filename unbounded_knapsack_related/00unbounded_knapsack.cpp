@@ -1,57 +1,27 @@
 //memoization method
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <unordered_map>
-#include <map>
-#include <queue>
-#include<set>
-#include<unordered_map>
-#include<string>
-using namespace std;
-int dp[10000][10000];
-class Solution {
-
+int dp[1001][1001];
+class Solution{
 public:
-    int solve(int W, int n, int values[], int weights[]) {
-        if (n == 0) {
+    int solve(int wt[], int val[], int W, int N){
+        if (W <= 0 || N == 0){
             return 0;
         }
-        if (W <= 0) {
-            return 0;
+        if (dp[N][W] != -1) return dp[N][W];
+        int pick = INT_MIN;
+        int notPick = solve(wt, val, W, N - 1);
+        
+        if (wt[N - 1] <= W){
+            pick = val[N - 1] + solve(wt, val, W - wt[N - 1], N);
         }
-        if (dp[n][W] != -1) {
-            return dp[n][W];
-        }
-        else {
-            if (weights[n - 1] <= W) {
-                dp[n][W] = max(values[n - 1] + solve(W - weights[n - 1], n, values, weights), solve(W, n - 1, values, weights));
-            }
-            else {
-                dp[n][W] = solve(W, n - 1, values, weights);
-            }
-            return dp[n][W];
-        }
+        return dp[N][W] = max(pick, notPick);
     }
-    int unboundedKnapsack(int W, int n, int values[], int weights[])
+    int knapSack(int N, int W, int val[], int wt[])
     {
-        // Your code goes here
-        for (int i = 0; i <= n; i++) {
-            for (int j = 0; j <= W; j++) {
-                dp[i][j] = -1;
-            }
-        }
-        return solve(W, n, values, weights);
+        // code here
+        memset(dp, -1, sizeof(dp));
+        return solve(wt, val, W, N);
     }
 };
-int main() {
-    int W = 100;
-    int val[] = { 10, 30, 20 };
-    int wt[] = { 5, 10, 15 };
-    Solution obj;
-    cout << obj.unboundedKnapsack(W, 3, val, wt) << endl;
-    return 0;
-}
 //top down
 int dp[10000][10000];
 class Solution {
