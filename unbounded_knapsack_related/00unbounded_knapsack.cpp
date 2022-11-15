@@ -65,3 +65,25 @@ public:
         return prev[W];
     }
 };
+// if we analyze the above code, we'll understand that we can just solve this problem by using single row.
+class Solution{
+public:
+    int knapSack(int N, int W, int val[], int wt[])
+    {
+        // code here
+        vector<int> profit(W + 1, 0);
+        for (int ind = 1; ind <= N; ind++){
+            for (int capacity= 1; capacity <= W; capacity++){
+                int notPick = profit[capacity];
+                int pick = 0;
+                if (wt[ind - 1] <= capacity){
+                    pick = val[ind - 1] + profit[capacity - wt[ind - 1]];
+                }
+                profit[capacity] = max(pick, notPick);
+            }
+        }
+        return profit[W];
+    }
+};
+
+//>>>>>>>>>>>>> time: O(N * W) and space: O(W)
