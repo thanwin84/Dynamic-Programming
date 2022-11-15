@@ -3,6 +3,7 @@ int dp[1001][1001];
 class Solution{
 public:
     int solve(int wt[], int val[], int W, int N){
+        // if bag is empty or no items to choose
         if (W <= 0 || N == 0){
             return 0;
         }
@@ -23,45 +24,44 @@ public:
     }
 };
 //top down
-int dp[10000][10000];
-class Solution {
-
+class Solution{
 public:
-    int unboundedKnapsack(int W, int n, int values[], int weights[])
+    int knapSack(int N, int W, int val[], int wt[])
     {
-        // Your code goes here
-        for (int i = 0; i <= W; i++) dp[0][i] = 0;
-        for (int i = 0; i <= n; i++) dp[i][0] = 0;
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= W; j++) {
-                if (weights[i - 1] <= j) {
-                    dp[i][j] = max(dp[i - 1][j], values[i - 1] + dp[i][j - weights[i - 1]]);
+        // code here
+        vector<vector<int>> dp(N + 1, vector<int>(W + 1, 0));
+        for (int ind = 1; ind <= N; ind++){
+            for (int capacity= 1; capacity <= W; capacity++){
+                int notPick = dp[ind - 1][capacity];
+                int pick = 0;
+                if (wt[ind - 1] <= capacity){
+                    pick = val[ind - 1] + dp[ind][capacity - wt[ind - 1]];
                 }
-                else {
-                    dp[i][j] = dp[i - 1][j];
-                }
+                dp[ind][capacity] = max(pick, notPick);
+                
             }
         }
-        return dp[n][W];
+        return dp[N][W];
     }
 };
 //space optimized solution
-int dp[10000];
-class Solution {
-
+class Solution{
 public:
-    int unboundedKnapsack(int W, int n, int values[], int weights[])
+    int knapSack(int N, int W, int val[], int wt[])
     {
-        // Your code goes here
-        dp[0] = 0;
-        for (int i = 1; i <= W; i++) dp[i] = INT_MIN;
-        for (int i = 1; i <= W; i++) {
-            for (int j = 0; j < n; j++) {
-                if (weights[j] <= i) {
-                    dp[i] = max(dp[i], dp[i - weights[j]] + 1);
+        // code here
+        vector<int> prev(W + 1, 0), curr(W + 1, 0);
+        for (int ind = 1; ind <= N; ind++){
+            for (int capacity= 1; capacity <= W; capacity++){
+                int notPick = prev[capacity];
+                int pick = 0;
+                if (wt[ind - 1] <= capacity){
+                    pick = val[ind - 1] + curr[capacity - wt[ind - 1]];
                 }
+                curr[capacity] = max(pick, notPick);
             }
+            prev = curr;
         }
-        return dp[W];
+        return prev[W];
     }
 };
