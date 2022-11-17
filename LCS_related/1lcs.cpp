@@ -28,58 +28,45 @@ public:
     }
 };
 //memoization
-int dp[10000][10000];
-class Solution
-{
+int dp[1001][1001];
+class Solution {
 public:
-    int solve(int x, int y, string &s1, string &s2) {
-        if (x == 0 || y == 0) {
+    int solve(string &text1, string &text2, int left, int right){
+        // either one string is empty
+        if (left == 0 || right == 0){
             return 0;
         }
-        if (dp[x][y] != -1) {
-            return dp[x][y];
+        if (dp[left][right] != -1) return dp[left][right];
+        // we've found a match
+        if (text1[left - 1] == text2[right - 1]){
+            return dp[left][right] = 1 + solve(text1, text2, left - 1, right - 1);
         }
-        else {
-            if (s1[x - 1] == s2[y - 1]) {
-                dp[x][y] =  1 + lcs(x - 1, y - 1, s1, s2);
-            }
-            else {
-                dp[x][y] = max(lcs(x - 1, y, s1, s2), lcs(x, y - 1, s1, s2));
-            }
-            return dp[x][y];
-        }
+        return dp[left][right] =max(solve(text1, text2, left -1, right), solve(text1, text2, left, right - 1));
     }
-    //Function to find the length of longest common subsequence in two strings.
-    int lcs(int x, int y, string s1, string s2)
-    {
-        for (int i = 0; i <= x; i++) {
-            for (int j = 0; j <= y; j++) {
-                dp[i][j] = -1;
-            }
-        }
-        return solve(x, y, s1, s2);
+    int longestCommonSubsequence(string text1, string text2) {
+        int left = text1.size();
+        int right = text2.size();
+        memset(dp,-1, sizeof(dp));
+        return solve(text1, text2, left, right);
     }
 };
 //top down approach
-int dp[10000][10000];
-class Solution
-{
+class Solution {
 public:
-    //Function to find the length of longest common subsequence in two strings.
-    int lcs(int x, int y, string s1, string s2)
-    {
-        for (int i = 0; i <= x; i++) dp[0][i] = 0;
-        for (int i = 0; i <= y; i++) dp[i][0] = 0;
-        for (int i = 1; i <= x; i++) {
-            for (int j = 1; j <= y; j++) {
-                if (s1[i - 1] == s2[j - 1]) {
-                    dp[i][j] = 1 + dp[i - 1][j - 1];
+    int longestCommonSubsequence(string text1, string text2) {
+        int n1 = text1.size();
+        int n2 = text2.size();
+        vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, 0));
+        for (int left = 1; left <= n1; left++){
+            for (int right = 1; right <= n2; right++){
+                if (text1[left - 1] == text2[right - 1]){
+                    dp[left][right] = 1 + dp[left - 1][right - 1];
                 }
                 else {
-                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                    dp[left][right] = max(dp[left - 1][right], dp[left][right - 1]);
                 }
             }
         }
-        return dp[x][y];
+        return dp[n1][n2];
     }
 };
