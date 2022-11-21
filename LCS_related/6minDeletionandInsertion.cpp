@@ -1,43 +1,31 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <unordered_map>
-#include <map>
-#include <queue>
-#include<set>
-#include<unordered_map>
-#include<string>
-using namespace std;
-int dp[10000][10000];
-
-class Solution {
-public:
-    pair<int, int> minDeletionInsertion(string S, string s2) {
-        // code here
-        reverse(S.begin(), S.end());
-        for (int i = 0; i <= S.size(); i++) dp[i][0] = 0;
-        for (int i = 0; i <= s2.size(); i++) dp[0][i] = 0;
-        for (int i = 1; i <= S.size(); i++) {
-            for (int j = 1; j <= s2.size(); j++) {
-                if (S[i - 1] == s2[j - 1]) {
-                    dp[i][j] = 1 + dp[i - 1][j - 1];
+class Solution{
+	public:
+	int lcs(string &text1, string &text2) {
+        int n1 = text1.size();
+        int n2 = text2.size();
+        vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, 0));
+        for (int left = 1; left <= n1; left++){
+            for (int right = 1; right <= n2; right++){
+                if (text1[left - 1] == text2[right - 1]){
+                    dp[left][right] = 1 + dp[left - 1][right - 1];
                 }
                 else {
-                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                    dp[left][right] = max(dp[left - 1][right], dp[left][right - 1]);
                 }
             }
         }
-        int deletions = S.size() - dp[S.size()][s2.size()];
-        int insertions = s2.size() - dp[S.size()][s2.size()];
-        return { deletions, insertions };
+        return dp[n1][n2];
     }
+	int minOperations(string str1, string str2) 
+	{ 
+	    // Your code goes here
+	    int l1 = str1.size();
+	    int l2 = str2.size();
+	    int result = lcs(str1, str2);
+        int deletion = l1 - result;
+        int insertion = l2 - resultl
+	    return deletion + insertion;
+	    
+	    
+	} 
 };
-
-int main() {
-    string a = "heap";
-    string b = "pea";
-    Solution obj;
-    pair<int, int> result =  obj.minDeletionInsertion(a, b);
-    cout << result.first << " " << result.second << endl;
-    return 0;
-}
