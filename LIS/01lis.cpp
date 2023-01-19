@@ -1,3 +1,35 @@
+// memoization 
+int dp[2501];
+class Solution {
+public:
+    int _max;
+    int solve(vector<int> &nums, int curr){
+        if (curr == 1){
+            return 1;
+        }
+        if (dp[curr] != -1){
+            return dp[curr];
+        }
+        int ans = 1;
+        for (int i = 1; i < curr; i++){
+            int possibleAns = 1 + solve(nums, i);
+            if (nums[curr - 1] > nums[i - 1]){
+                ans = max(ans, possibleAns);
+            }
+            
+        }
+        _max = max(_max, ans);
+        return dp[curr] = ans;
+    }
+    int lengthOfLIS(vector<int>& nums) {
+    _max = 1;
+    memset(dp, -1, sizeof(dp));
+    solve(nums, nums.size());
+    return _max;
+    
+        
+    }
+};
 //time: O(n*n) and space: O(n)
 int dp[100002];
 class Solution
