@@ -1,4 +1,4 @@
-//time: O(n^2) and space: O(n)
+//time complecity: O(n^2) and space complexity: O(n)
 class Solution {
 public:
     int minimumMountainRemovals(vector<int>& arr) {
@@ -30,58 +30,55 @@ public:
         return n - _max;
     }
 };
-//time: O(nlogn)
+//time: O(nlogn) and space complexity: O(n)
 class Solution {
 public:
-    int next_greater_element_index(vector<int>& arr, int target) {
+    int nextGreaterIndex(vector<int> &nums, int target){
         int low = 0;
-        int high = arr.size();
-        int index = 0;
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-            if (arr[mid] >= target) {
-                index = mid;
+        int high = nums.size() - 1;
+        int ind = 0;
+        while (low <= high){
+            int mid = (low + high) / 2;
+            if (nums[mid] >= target){
+                ind = mid;
                 high = mid - 1;
             }
+            else low = mid + 1;
+        }
+        return ind;
+    }
+    int minimumMountainRemovals(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> v1;
+        // store lis here
+        vector<int> lis(n, 1);
+        v1.push_back(nums[0]);
+	// increasing to backward
+        for (int i = 1; i < n; i++){
+            if (nums[i] > v1.back()) v1.push_back(nums[i]);
             else {
-                low = mid + 1;
+                int ind = nextGreaterIndex(v1, nums[i]);
+                v1[ind] = nums[i];
+            }
+            lis[i] = v1.size();
+        }
+        vector<int> v2;
+        v2.push_back(nums[n - 1]);
+        int ans = 0;
+	// increasing to forward
+        for (int i = n - 2; i >= 0; i--){
+            if (nums[i] > v2.back()) v2.push_back(nums[i]);
+            else {
+                int ind = nextGreaterIndex(v2, nums[i]);
+                v2[ind] = nums[i];
+                int lis = v2.size();
+            }
+            if (lis[i] > 1 && v2.size() > 1){
+                int possibleAns = lis[i] + v2.size() - 1;
+                ans = max(ans, possibleAns);
             }
         }
-        return index;
+        return n - ans;
     }
-    vector<int> LIS(vector<int>& arr) {
-        vector<int> seq;
-        vector<int> dp;
-        dp.push_back(1);
-        seq.push_back(arr[0]);
-        for (int i = 1; i < arr.size(); i++) {
-            if (seq.back() < arr[i]) {
-                seq.push_back(arr[i]);
-            }
-            else if (seq.back() > arr[i]) {
-                int indx = next_greater_element_index(seq, arr[i]);
-                seq[indx] = arr[i];
-            }
-            dp.push_back(seq.size());
-        }
-        return dp;
-    }
-    int minimumMountainRemovals(vector<int>& arr) {
-        vector<int> reversed_arr;
-        for (int i = arr.size() - 1; i >= 0; i--) reversed_arr.push_back(arr[i]);
-        vector<int> dp1 = LIS(arr);
-        vector<int> dp2 = LIS(reversed_arr);
-        int ans = INT_MIN;
-        for (int i = 1; i < arr.size() - 1; i++) {
-            if (dp1[i] > 1 and dp2[arr.size() - i - 1] > 1) {
-                int temp = dp1[i] + dp2[arr.size() - i - 1] - 1;
-		// take max increasing subsequene 
-                ans = max(ans, temp);
-            }
-        }
-	// if we subtract the max LIS from array size, we will get min number of removal
-        return arr.size() - ans;
-    }
-
 };
 
