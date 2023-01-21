@@ -71,7 +71,6 @@ public:
             else {
                 int ind = nextGreaterIndex(v2, nums[i]);
                 v2[ind] = nums[i];
-                int lis = v2.size();
             }
             if (lis[i] > 1 && v2.size() > 1){
                 int possibleAns = lis[i] + v2.size() - 1;
