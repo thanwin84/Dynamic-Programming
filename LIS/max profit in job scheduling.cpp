@@ -1,5 +1,6 @@
 //time: O(n^2) 
 // TLE
+// using lis 
 class Job {
 public:
     int startTime;
@@ -38,6 +39,55 @@ public:
             maxProfit = max(maxProfit, dp[i]);
         }
         return maxProfit;
+    }
+};
+
+
+
+// memoization 
+
+int dp[50001];
+class Job {
+public:
+    int startTime;
+    int endTime;
+    int profit;
+    Job(int startTime, int endTime, int profit) {
+        this->startTime = startTime;
+        this->endTime = endTime;
+        this->profit = profit;
+    }
+};
+bool comp(Job &p1, Job &p2) {
+    return p1.startTime < p2.startTime;
+}
+
+class Solution {
+public:
+    int solve(vector<Job> &jobs, int current, int n, vector<int> &startTime){
+        if (current >= n){
+            return 0;
+        }
+        if (dp[current] != -1) {
+            return dp[current];
+        }
+        int nextIndex = lower_bound(startTime.begin(),startTime.end(),jobs[current].endTime) - startTime.begin();
+        
+        int pick = jobs[current].profit +  solve(jobs, nextIndex, n, startTime);
+        int notPick = solve(jobs, current + 1, n, startTime);
+        return dp[current] =  max(pick, notPick);
+    }
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        int n = startTime.size();
+        memset(dp, -1, sizeof(dp));
+        vector<Job> jobs;
+        for (int i = 0; i < n; i++) {
+            jobs.push_back(Job(startTime[i], endTime[i], profit[i]));
+        }
+        // sort according to End time
+        sort(jobs.begin(), jobs.end(), comp);
+        sort(startTime.begin(),startTime.end());
+        return solve(jobs, 0, n, startTime);
     }
 };
 //time: O(nlogn)
