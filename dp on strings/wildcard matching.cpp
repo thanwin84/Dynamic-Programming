@@ -1,39 +1,53 @@
-// time: O(n * m) and space: O(n * m)
+/////////memoization/////////////////
 int dp[2001][2001];
 class Solution {
 public:
-    bool solve(string &s, string &p, int i, int j){
-        if (i < 0 && j < 0){
+    bool solve(string &p, string &s, int i, int j){
+        // both strings are empty
+        // that means two string are same
+        if (i == 0 && j == 0){
             return true;
         }
-        if (i >= 0 && j < 0){
+        // patern is empty and other string is not empty
+        // that means this patter doesn't match other string
+        if (i == 0 && j > 0){
             return false;
         }
-        if (i < 0 && j >= 0){
-            for (int c = 0; c <= j; c++){
-                if (p[c] != '*'){
+        if (i > 0 && j == 0){
+            // if all the character in pattern is *
+            // then we can match the empty string with this pattern
+            // if any character in this pattern is not equal to *, then 
+            // we can't match
+            for (int c = 1; c <= i; c++){
+                if (p[c - 1] != '*'){
                     return false;
                 }
             }
+            // all characters in pattern is *
             return true;
         }
-        if (dp[i][j] != -1){
-            return dp[i][j];
+        if (dp[i][j] != -1) return dp[i][j];
+        // if both character is same, we can match
+        // if last char of patter is ?, then we can match with single character
+        if (p[i - 1] == s[j - 1] || p[i - 1] == '?'){
+            return dp[i][j] = solve(p, s, i - 1, j - 1);
         }
-        if (s[i] == p[j] || p[j] == '?'){
-            return dp[i][j] = solve(s, p, i - 1, j - 1);
+        if (p[i - 1] == '*'){
+            // we can match with 0 characters or more
+            return dp[i][j] = solve(p, s, i - 1, j) || solve(p, s, i, j - 1);
         }
-        if (p[j] == '*'){
-            return dp[i][j] = solve(s, p, i - 1, j) || solve(s, p, i, j -1);
-        }
-        return dp[i][j] = false;
+        return false;
+
     }
     bool isMatch(string s, string p) {
         memset(dp, -1, sizeof(dp));
-        return solve(s, p, s.size() -1, p.size() -1);
+        return solve(p, s, p.size(), s.size());
     }
 };
-// iterative approach
+
+// time: O(n *m) and space: O(n * m)
+
+///////////////////////iterative approach/////////////////////
 int dp[2001][2001];
 class Solution {
 public:
