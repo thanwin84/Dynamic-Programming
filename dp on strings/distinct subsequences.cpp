@@ -3,22 +3,23 @@ int dp[1001][1001];
 class Solution {
 public:
     int solve(string &s, string &t, int i, int j){
-        // we already searched all characters of string "t"
-        if (j <= 0) {
+        // we've got a match
+        if (j <= 0){
             return 1;
         }
-        // we are left with 0 elements
+        // s string is exausted, that means no matching found
         if (i <= 0){
             return 0;
         }
         if (dp[i][j] != -1){
             return dp[i][j];
         }
+        
         if (s[i - 1] == t[j - 1]){
             return dp[i][j] = solve(s, t, i - 1, j - 1) + solve(s, t, i - 1, j);
         }
         else {
-            return dp[i][j] = solve(s, t, i -1, j);
+            return dp[i][j] = solve(s, t, i - 1, j);
         }
     }
     int numDistinct(string s, string t) {
