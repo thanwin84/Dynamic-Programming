@@ -1,5 +1,8 @@
- // algorithm: If I wanna sell at ith day, that means I need to buy the chapest stock from 0 to i - 1th day. This will make sure that we get the maximum profit.
- // time: O(n) and space: O(1)
+ // Naive algorithm: If I wanna sell at ith day, that means I need to buy the chapest stock from 0 to i - 1th day. 
+// This will make sure that we get the maximum profit
+//-----Optimized approach----------
+// Keep track of min price at each index
+// maxprofit at each index = current profit - min price
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
@@ -13,3 +16,4 @@ public:
         return ans;
     }
 };
+//Time: O(n) and space: O(1)
