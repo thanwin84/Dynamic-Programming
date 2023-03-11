@@ -1,26 +1,33 @@
 // time: O(n*2) and space: O(n*2)
 // memoized solution
+// algorithm: bought state:we can either buy or skip the current day to sell it next day
+// sell state: we can either sell or skip the current day to sell it next day
+int dp[30001][2];
 class Solution {
 public:
-    int solve(vector<int> &prices, bool bought, int current, vector<vector<int>>&dp){
-        if (current == prices.size()){
+    int solve(vector<int> &prices, int currentDay, bool bought){
+        // no days left, so no profit
+        if (currentDay == prices.size()){
             return 0;
         }
-        if (dp[bought][current] != -1){
-            return dp[bought][current];
+        if (dp[currentDay][bought] != -1){
+            return (dp[currentDay][bought]);
         }
+        int skip = solve(prices, currentDay + 1, bought);
         if (bought){
-            int buy = -prices[current] + solve(prices, false, current + 1,  dp);
-            return dp[bought][current] = max(buy, solve(prices, bought, current + 1, dp));
+            // if we buy now, the next day we will be in sell state
+            int buy = -prices[currentDay] + solve(prices, currentDay + 1, false);
+            return dp[currentDay][bought] = max(buy, skip);
         }
         else {
-            int not_buy = prices[current] + solve(prices, true, current + 1, dp);
-            return dp[bought][current] = max(not_buy, solve(prices, bought, current + 1, dp));
+            int sell = prices[currentDay] + solve(prices, currentDay + 1, true);
+            return dp[currentDay][bought] = max(sell, skip);
         }
     }
     int maxProfit(vector<int>& prices) {
-        vector<vector<int>> dp(2, vector<int>(prices.size() + 1, -1));
-        return solve(prices, true, 0, dp);
+        memset(dp, -1, sizeof(dp));
+        // initially we are the bought state
+        return solve(prices, 0, true);
     }
 };
 // iterative approach
@@ -68,6 +75,7 @@ public:
         return current[true];
     }
 };
+////////enought for the interview. the last doesn't optimize the solution. in the last part, we are just uisng four variables///
 // in the above example, first we are calculting curr[0] and then curr[1]. we can calculate it in one go
 // that means we can omit 2nd loop
 class Solution {
