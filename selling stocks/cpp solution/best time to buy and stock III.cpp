@@ -1,22 +1,28 @@
-// time: O(n * 2 * 2) and space: O(n *2 * 2)
+
+///----------------memoization--------------------
 int dp[100001][2][2];
 class Solution {
 public:
-    int solve(vector<int> &prices, int currDay, int trans, bool bought){
-        if (currDay == prices.size() || trans >= 2){
+    int solve(vector<int> &prices, int currentDay, int trans, bool bought){
+        // If no days left or transaction is equal to 2
+        // then we can't make any profit
+        if (currentDay == prices.size() || trans >= 2){
             return 0;
         }
-        if (dp[currDay][trans][bought] != -1){
-            return dp[currDay][trans][bought];
+        if (dp[currentDay][trans][bought] != -1){
+            return dp[currentDay][trans][bought];
         }
-        int skip = solve(prices, currDay + 1, trans, bought);
+        // skip the current day
+        int skip = solve(prices, currentDay + 1, trans, bought);
         if (bought){
-            int buy = -prices[currDay] + solve(prices, currDay + 1, trans, false);
-            return dp[currDay][trans][bought] =  max(skip, buy);
+            int buy = -prices[currentDay] + solve(prices, currentDay + 1, trans, false);
+            return dp[currentDay][trans][bought] =  max(skip, buy);
         }
         else {
-            int sell = prices[currDay] + solve(prices, currDay + 1, trans + 1, true);
-            return dp[currDay][trans][bought] =  max(skip, sell); 
+            // when we sell a stock, then we complete a transaction
+            // next day we will be at buy state
+            int sell = prices[currentDay] + solve(prices, currentDay+ 1, trans + 1, true);
+            return dp[currentDay][trans][bought] =  max(skip, sell); 
         }
     }
     int maxProfit(vector<int>& prices) {
@@ -24,28 +30,30 @@ public:
         return solve(prices, 0, 0, true);
     }
 };
-// iterative approach
-int dp[100001][3][2];
+
+//// Time: O(n) and space: O(n)
+
+//-----------terative approach----------------------------------
+
+int dp[100002][3][2];
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-        int n = prices.size();
-        for (int currDay = n; currDay >= 0; currDay--){
-            for (int trans = 0; trans <= 2; trans++){
-                for (int bought = 0; bought <= 1; bought++){
-                    if (currDay == n || trans == 2){
-                        dp[currDay][trans][bought] = 0;
-                        
+        int days = prices.size();
+        for (int currentDay = days; currentDay >= 0; currentDay--){
+            for(int tran = 0; tran < 2; tran++){
+                for (int bought = 0; bought < 2; bought++){
+                    int skip = dp[currentDay + 1][tran][bought];
+                    if (currentDay == days){
+                        dp[currentDay][tran][bought] = 0;
                     }
                     else if (bought){
-                        int buy = -prices[currDay] + dp[currDay + 1][trans][false];
-                        int skip = dp[currDay + 1][trans][bought];
-                        dp[currDay][trans][bought] = max(buy, skip);
+                        int buy = -prices[currentDay] + dp[currentDay + 1][tran][false];
+                        dp[currentDay][tran][bought] = max(buy, skip);
                     }
                     else {
-                        int sell = prices[currDay] + dp[currDay + 1][trans + 1][true];
-                        int skip = dp[currDay + 1][trans][bought];
-                        dp[currDay][trans][bought] = max(sell, skip);
+                        int sell = prices[currentDay] + dp[currentDay + 1][tran + 1][true];
+                        dp[currentDay][tran][bought] = max(sell, skip);
                     }
                 }
             }
@@ -53,33 +61,31 @@ public:
         return dp[0][0][true];
     }
 };
-// time: O(n) and space: O(1)
+///-------------O(1) space---------------------
+
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-        int n = prices.size();
-        vector<vector<int>> ahead(3, vector<int>(2, 0));
-        vector<vector<int>> current(3, vector<int>(2, 0));
-        for (int currDay = n; currDay >= 0; currDay--){
-            for (int trans = 0; trans <= 1; trans++){
-                for (int bought = 0; bought <= 1; bought++){
-                    if (currDay == n){
-                        current[trans][bought] = 0;
-                        
+        vector<vector<int>> current(3, vector<int>(2, 0)), ahead(3, vector<int>(2, 0));
+        int days = prices.size();
+        for (int currentDay = days; currentDay >= 0; currentDay--){
+            for(int tran = 0; tran < 2; tran++){
+                for (int bought = 0; bought < 2; bought++){
+                    int skip = ahead[tran][bought];
+                    if (currentDay == days){
+                        current[tran][bought] = 0;
                     }
                     else if (bought){
-                        int buy = -prices[currDay] + ahead[trans][false];
-                        int skip = ahead[trans][bought];
-                        current[trans][bought] = max(buy, skip);
+                        int buy = -prices[currentDay] + ahead[tran][false];
+                        current[tran][bought] = max(buy, skip);
                     }
                     else {
-                        int sell = prices[currDay] + ahead[trans + 1][true];
-                        int skip = ahead[trans][bought];
-                        current[trans][bought] = max(sell, skip);
+                        int sell = prices[currentDay] + ahead[tran + 1][true];
+                        current[tran][bought] = max(sell, skip);
                     }
                 }
+                ahead = current;
             }
-            ahead = current;
         }
         return current[0][true];
     }
