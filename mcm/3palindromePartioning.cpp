@@ -1,39 +1,33 @@
 //recursive solution
 class Solution {
 public:
-    bool isPalindrome(string s, int i, int j) {
-        while (i < j) {
-            if (s[i] == s[j]) {
-                i++;
-                j--;
-            }
-            else {
+    bool isPalindrone(string &s, int start, int end){
+        while(start <= end){
+            if (s[start] != s[end]){
                 return false;
             }
+            start++;
+            end--;
         }
         return true;
     }
-    int solve(string s, int i, int j) {
-        if (i == j) {
+    int solve(string &s, int start, int end){
+        // single character is always a palindrone
+        if (start == end){
             return 0;
         }
-        if (isPalindrome(s, i, j)) {
-            return 0;
+        // if the string is palindrone, no need to partition 
+        if (isPalindrone(s, start, end)) return 0;
+        int _min = INT_MAX;
+        for (int partitionIndex = start; partitionIndex < end; partitionIndex++){
+            int left = solve(s, start, partitionIndex);
+            int right = solve(s, partitionIndex + 1, end);
+            _min = min(_min, 1 + left + right);
         }
-        int result = INT_MAX;
-        for (int k = i; k < j; k++) {
-            int left = solve(s, i, k);
-            int right = solve(s, k + 1, j);
-            int temp_ans = 1 + left + right;
-            result = min(temp_ans, result);
-        }
-        return result;
+        return _min;
     }
-    int palindromicPartition(string str)
-    {
-        int i = 0;
-        int j = str.size() - 1;
-        return solve(str, i, j);
+    int minCut(string s) {
+        return solve(s, 0, s.size() - 1);
     }
 };
 //memoization 
