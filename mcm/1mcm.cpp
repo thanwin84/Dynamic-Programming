@@ -1,3 +1,5 @@
+// single matrix: [10, 20, 30, 40]
+// matrix: a = 10 * 20, B = 20 * 30, C = 30 * 40
 //recursive
 class Solution {
 public:
