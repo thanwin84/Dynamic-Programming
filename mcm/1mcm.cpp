@@ -2,6 +2,7 @@
 class Solution {
 public:
     int Solve(int arr[], int i, int j) {
+        // single matrix
         if (i >= j) {
             return 0;
         }
